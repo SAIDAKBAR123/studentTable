@@ -4,15 +4,25 @@ public class Topic {
     private String id;
     private String name;
     private String description;
+    private String email;
 
     public Topic() {
 
     }
 
-    public Topic(String id, String name, String description) {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Topic(String id, String name, String description, String email) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.email=email;
     }
 
     public String getId() {

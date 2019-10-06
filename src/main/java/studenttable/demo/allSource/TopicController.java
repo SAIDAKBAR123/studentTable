@@ -1,53 +1,52 @@
 package studenttable.demo.allSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpServletRequest;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.List;
-//import com.zaxxer.hikari.HikariDataSource;
 @Controller
-
 public class TopicController {
+
     @Autowired
     public TopicService topicService;
-    Connection conn = null;
-    PreparedStatement ps = null;
-    CallableStatement cs = null;
-    ResultSet rs = null;
 
-    @GetMapping ({"/index", "/"})
-    public String home()
-    {
-        return "index";
+    @GetMapping ("/")
+    public String getAllTopics(Model model){
+        model.addAttribute("getAll", topicService.getTopics());
+    return "index";
     }
 
-    @RequestMapping("/topics")
-    public List<Topic> getAllTopics(){
-        return topicService.getTopics();
-    }
-
-    @RequestMapping("/topics/{id}")
-    public Topic getTopic(@PathVariable String id){
-        return topicService.getTopic(id);
+    @GetMapping ("/index")
+    public String redirect(){
+        return "regStudent";
     }
 
     @RequestMapping ( method = RequestMethod.POST, value = "/topics")
-    public void addTopic (@RequestBody Topic topic){
-        topicService.addTopic(topic);
+    public String addTopic ( HttpServletRequest request){
+        String id = request.getParameter("studentId");
+        String name = request.getParameter("studentName");
+        String email = request.getParameter("studentEmail");
+        String faculty = request.getParameter("studentFaculty");
+        topicService.addTopic(id, name, faculty, email);
+        return "redirect:/";
     }
 
-    @RequestMapping ( method = RequestMethod.PUT, value = "/topics/{id}")
-    public void updateTopic (@RequestBody Topic topic, @PathVariable String id){
-        topicService.updateTopic(id, topic);
+    @RequestMapping ( method = RequestMethod.POST, value = "/topics/edit")
+    public String editTopic ( HttpServletRequest request){
+        String id = request.getParameter("sId");
+        String name = request.getParameter("sName");
+        String email = request.getParameter("sEmail");
+        String faculty = request.getParameter("sFaculty");
+        topicService.editTopic(id, name, faculty, email);
+        return "redirect:/";
     }
 
-    @RequestMapping ( method = RequestMethod.DELETE, value = "/topics/{id}")
-    public void updateTopic (@PathVariable String id){
+    @RequestMapping ( method = RequestMethod.POST, value = "/remove/{id}")
+    public String updateTopic (@PathVariable String id){
         topicService.deleteTopic(id);
+        return "redirect:/";
+
     }
 }

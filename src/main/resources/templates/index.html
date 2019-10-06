@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <!-- Font Awesome -->
@@ -17,41 +17,125 @@
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/js/mdb.min.js"></script>
 
-    <title>Title</title>
+    <title>CRUD Operation made by SAIDAKBAR</title>
 
 </head>
 <body>
-<div class="container">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container fluid">
+    <div class="col">
+ <div class="row-12">
+        <!-- Default form subscription -->
+        <form class="text-center border border-light p-5" action="/topics" method="post">
+
+            <p class="h4 mb-4">REGISTRATIONS</p>
+
+            <!-- Name -->
+            <input type="text" id="studentFullName" name="studentName" class="form-control mb-4" placeholder="Full Name">
+
+            <!-- Email -->
+            <input type="text" id="studentId" name="studentId" class="form-control mb-4" placeholder="Student ID">
+
+
+            <input type="email" id="studentEmail" name="studentEmail" class="form-control mb-4" placeholder="E-mail">
+
+            <input type="text" id="studentFaculty" name="studentFaculty" class="form-control mb-4" placeholder="Student Faculty">
+
+            <!-- Sign in button -->
+            <button class="btn btn-info btn-block" type="submit">Register</button>
+
+
+        </form>
+
+ </div>
+        <!-- Default form subscription -->
+        <div class="row">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Student Id</th>
+                <th scope="col">First Name</th>
+
+                <th scope="col">Faculty</th>
+                <th scope="col">Email</th>
+                <th scope="col">Remove</th>
+                <th scope="col">Edit</th>
+            </tr>
+            </thead>
+            <tbody th:each="t: ${getAll}">
+
+            <td th:text="${t.id}"></td>
+            <td th:text="${t.name}"></td>
+            <td th:text="${t.description}"></td>
+
+             <td th:text="${t.email}"></td>
+            <td ><form th:action="@{/remove/}+${t.id}" method="post" class="table-remove">
+                    <button type="submit" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button>
+            </form>
+            </td>
+            <td>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-success btn-rounded btn-sm my-0" th:attr="data-object-id='',data-toggle='modal', data-target='#'+${t.id}">
+                  edit
+                </button>
+
+                <!-- Modal -->
+                <!-- Full Height Modal Right -->
+                <div class="modal fade top" th:id="${t.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+
+                    <!-- Add class .modal-full-height and then add class .modal-right (or other classes from list above) to set a position to the modal -->
+                    <div class="modal-dialog modal-full-height modal-top" role="document">
+
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title w-100" id="myModalLabel">Edit field</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class=" border border-light p-1" action="/topics/edit" method="post">
+
+                                    <p class="h4 mb-4"></p>
+
+                                    <!-- Name -->
+                                    <label for="sName" class="disabled">Student Name</label>
+                                    <input type="text" id="sName" name="sName" aria-label="Student Name" class="form-control mb-4" placeholder="Full Name" th:value="${t.name}">
+
+                                    <!-- Email -->
+                                    <label for="studenId" class="disabled">Student ID</label>
+                                    <input type="text" id="studenId" name="sId" aria-label="Student ID" class="form-control mb-4" placeholder="Student ID" th:value="${t.id}">
+
+                                    <label for="studentEmail" class="disabled">Email Address</label>
+                                    <input type="email"  id="studntEmail" name="sEmail" aria-label="Student Email" class="form-control mb-4" placeholder="E-mail" th:value="${t.email}">
+                                    <label for="studentFaculty" class="disabled">Faculty</label>
+                                    <input type="text" id="studntFaculty" name="sFaculty" aria-label="Student Faculty" class="form-control mb-4" placeholder="Student Faculty" th:value="${t.description}">
+
+                                    <!-- Sign in button -->
+                                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-outline-primary">Save changes</button>
+
+
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Full Height Modal Right -->
+            </td>
+            <!--<td><a href="/" class="btn btn-sm btn-success">Edit</a></td>-->
+
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <!-- Full Height Modal Right -->
+
 </div>
 </body>
 </html>
